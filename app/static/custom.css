@@ -1,0 +1,26 @@
+input.btn-primary{
+    color: #ffffff;
+    background-color:#FF5500;
+    border-radius: 100px;
+    border-width: 0px;
+}
+
+input.btn-primary:hover{
+    background-color: #FF6619;
+}
+
+button.btn-primary{
+    color: #ffffff;
+    background-color:#FF5500;
+    border-radius: 100px;
+    border-width: 0px;
+}
+
+button.btn-primary:hover{
+    background-color: #FF6619;
+}
+
+button.btn-outline-secondary{
+    border-radius: 100px;
+    border-width: 3px;
+}
