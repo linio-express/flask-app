@@ -41,10 +41,35 @@ def show(id_pedido):
         return redirect(url_for('inicio_page.inicio'))
 
 @pedido_page.route('/agregar_direccion', methods=['POST'])
-def agregar_direccion(id_pedido):
-    pedido = Pedido.obtener(id_pedido)
+def agregar_direccion():
     distrito = request.form['distrito']
     direccion = request.form['direccion']
+    id_pedido = request.form['id_pedido']
+    pedido = Pedido.obtener(id_pedido)
     pedido.direccion_de_envio = direccion + ", " + distrito
+    if pedido.estado == "En Progreso (Dirección pendiente)":
+        pedido.estado = "En Progreso (Preparando paquete)"
+    if pedido.estado == "En Progreso (Pago y dirección pendientes)":
+        pedido.estado = "En Progreso (Pago pendiente)"
     pedido.actualizar()
-    return redirect(url_for('pedido_page.show'))
+    return redirect(url_for('pedido_page.show', id_pedido = id_pedido))
+
+@pedido_page.route('/cancelar_pedido', methods=['POST'])
+def cancelar_pedido():
+    id_pedido = request.form['id_pedido']
+    pedido = Pedido.obtener(id_pedido)
+    pedido.estado = "Cancelado"
+    pedido.actualizar()
+    return redirect(url_for('inicio_page.inicio'))
+
+@pedido_page.route('/elegir_metodo_de_pago', methods=['POST'])
+def elegir_metodo_de_pago():
+    opcion = request.form['metodo_de_pago']
+    id_pedido = request.form['id_pedido']
+    pedido = Pedido.obtener(id_pedido)
+    if opcion == "tarjeta":
+        pedido.metodo_de_pago = "Tarjeta de crédito/débito"
+    if opcion == "efectivo":
+        pedido.metodo_de_pago = "Efectivo"
+    pedido.actualizar()
+    return redirect(url_for('pedido_page.show', id_pedido = id_pedido))

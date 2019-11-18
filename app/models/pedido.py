@@ -21,7 +21,7 @@ class Pedido(object):
         self.__productos = productos
         self.__metodo_de_pago = metodo_de_pago
         self.__direccion_de_envio = direccion_de_envio
-        self.__fecha_de_envio = tarifa_de_envio
+        self.__fecha_de_envio = fecha_de_envio
         self.__fecha_de_pago = fecha_de_pago
         self.__fecha_de_entrega = fecha_de_entrega
 
@@ -160,7 +160,7 @@ class Pedido(object):
         nuevo_pedido = Pedido()
         nuevo_pedido.usuario = Usuario.obtener(id_canasta)
         #Todo pedido recién creado tiene el estado "Nuevo"
-        nuevo_pedido.estado = "En Progreso (Pago y dirección pendiente)"
+        nuevo_pedido.estado = "En Progreso (Pago y dirección pendientes)"
         #La tarifa de envío es fija
         nuevo_pedido.tarifa_de_envio = 15
         #Valores por default
@@ -256,7 +256,7 @@ class Pedido(object):
             #Objeto cursor
             cursor = db.cursor()
             #Consulta de tipo UPDATE
-            query = """UPDATE pedidos SET id_usuario = {}, tarifa_de_envio = {}, fecha_de_creacion = '{}', estado = '{}', repartidor = '{}', metodo_de_pago = '{}', direccion_de_envio = '{}', tarifa_de_envio = '{}', fecha_de_pago = '{}', fecha_de_envio = '{}', fecha_de_entrega = '{}' WHERE id = {}""".format(self.usuario.id, self.tarifa_de_envio, self.fecha_de_creacion, self.estado, self.repartidor, self.metodo_de_pago, self.direccion_de_envio, self.tarifa_de_envio, self.fecha_de_pago, self.fecha_de_envio, self.fecha_de_entrega, self.id)
+            query = """UPDATE pedidos SET id_usuario = {}, tarifa_de_envio = {}, fecha_de_actualizacion = '{}', estado = '{}', repartidor = '{}', metodo_de_pago = '{}', direccion_de_envio = '{}', tarifa_de_envio = '{}', fecha_de_pago = '{}' WHERE id = {}""".format(self.usuario.id, self.tarifa_de_envio, datetime.now(), self.estado, self.repartidor, self.metodo_de_pago, self.direccion_de_envio, self.tarifa_de_envio, self.fecha_de_pago, self.id)
             #Imprimir query a ejecutar
             print('\u001b[33m' + '\033[1m' + query + '\033[0m')
             #Ejecutar query

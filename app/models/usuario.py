@@ -209,6 +209,7 @@ class Usuario(object):
         """Busca todos los pedidos del usuario en la db.
             Devuelve una lista donde cada elemento es un objeto de tipo pedido"""
         pedidos = []
+        resultados = []
         try:
             #Conexión a la base de datos usando ruta de archivo de configuración
             db = sqlite3.connect(Config.get("DATABASE"), detect_types=sqlite3.PARSE_DECLTYPES)
