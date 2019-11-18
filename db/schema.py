@@ -35,8 +35,8 @@ def crear_tabla_comercios(db):
         direccion VARCHAR(200) NOT NULL,
         ruc VARCHAR(11) NOT NULL,
         logo_url VARCHAR(200) NOT NULL,
-        fecha_de_creacion DateTime DEFAULT (datetime(current_timestamp)),
-        fecha_de_actualizacion DateTime DEFAULT (datetime(current_timestamp)));""")
+        fecha_de_creacion timestamp DEFAULT (datetime(current_timestamp)),
+        fecha_de_actualizacion timestamp DEFAULT (datetime(current_timestamp)));""")
 
     # Confirmar cambios
     db.commit()
@@ -55,8 +55,8 @@ def crear_tabla_categorias(db):
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nombre VARCHAR(30) NOT NULL,
         icono_url VARCHAR(200) NOT NULL,
-        fecha_de_creacion DateTime DEFAULT (datetime(current_timestamp)),
-        fecha_de_actualizacion DateTime DEFAULT (datetime(current_timestamp)));""")
+        fecha_de_creacion timestamp DEFAULT (datetime(current_timestamp)),
+        fecha_de_actualizacion timestamp DEFAULT (datetime(current_timestamp)));""")
 
     # Confirmar cambios
     db.commit()
@@ -78,8 +78,8 @@ def crear_tabla_productos(db):
         fotos_url TEXT,
         precio FLOAT NOT NULL,
         stock INTEGER NOT NULL,
-        fecha_de_creacion DateTime DEFAULT (datetime(current_timestamp)),
-        fecha_de_actualizacion DateTime DEFAULT (datetime(current_timestamp)),
+        fecha_de_creacion timestamp DEFAULT (datetime(current_timestamp)),
+        fecha_de_actualizacion timestamp DEFAULT (datetime(current_timestamp)),
         id_categoria INTEGER NOT NULL,
         id_comercio INTEGER NOT NULL,
         FOREIGN KEY(id_categoria) REFERENCES categorias(id),
@@ -101,14 +101,14 @@ def crear_tabla_usuarios(db):
     cursor.execute("""CREATE TABLE IF NOT EXISTS usuarios(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         dni VARCHAR(8) UNIQUE,
-        fecha_nacimiento DATETIME,
+        fecha_nacimiento timestamp,
         nombre_completo VARCHAR(100) NOT NULL,
         celular VARCHAR(15) NOT NULL,
         numero_de_tarjeta VARCHAR(16),
         nombre_de_usuario VARCHAR(32) UNIQUE,
         password VARCHAR(60) NULL,
-        fecha_de_creacion DateTime DEFAULT (datetime(current_timestamp)),
-        fecha_de_actualizacion DateTime DEFAULT (datetime(current_timestamp)),
+        fecha_de_creacion timestamp DEFAULT (datetime(current_timestamp)),
+        fecha_de_actualizacion timestamp DEFAULT (datetime(current_timestamp)),
         id_canasta INTEGER,
         correo VARCHAR(128) NOT NULL,
         FOREIGN KEY (id_canasta) REFERENCES canastas(id));""")
@@ -128,8 +128,8 @@ def crear_tabla_canastas(db):
     #Creacion de tabla canastas
     cursor.execute("""CREATE TABLE IF NOT EXISTS canastas(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        fecha_de_creacion DateTime DEFAULT (datetime(current_timestamp)),
-        fecha_de_actualizacion DateTime DEFAULT (datetime(current_timestamp)),
+        fecha_de_creacion timestamp DEFAULT (datetime(current_timestamp)),
+        fecha_de_actualizacion timestamp DEFAULT (datetime(current_timestamp)),
         id_usuario INTEGER NOT NULL,
         FOREIGN KEY (id_usuario) REFERENCES usuarios(id));""")
 
@@ -180,8 +180,8 @@ def crear_tabla_productos_por_pedido(db):
         id_pedido INTEGER NOT NULL,
         cantidad INTEGER NOT NULL,
         precio_unitario FLOAT NOT NULL,
-        fecha_de_creacion DateTime DEFAULT (datetime(current_timestamp)),
-        fecha_de_actualizacion DateTime DEFAULT (datetime(current_timestamp)),
+        fecha_de_creacion timestamp DEFAULT (datetime(current_timestamp)),
+        fecha_de_actualizacion timestamp DEFAULT (datetime(current_timestamp)),
         FOREIGN KEY(id_producto) REFERENCES productos(id),
         FOREIGN KEY(id_pedido) REFERENCES pedidos(id));""")
 
@@ -203,8 +203,8 @@ def crear_tabla_productos_por_canasta(db):
         id_producto INTEGER NOT NULL,
         id_canasta INTEGER NOT NULL,
         cantidad INTEGER NOT NULL,
-        fecha_de_creacion DateTime DEFAULT (datetime(current_timestamp)),
-        fecha_de_actualizacion DateTime DEFAULT (datetime(current_timestamp)),
+        fecha_de_creacion timestamp DEFAULT (datetime(current_timestamp)),
+        fecha_de_actualizacion timestamp DEFAULT (datetime(current_timestamp)),
         FOREIGN KEY(id_producto) REFERENCES productos(id),
         FOREIGN KEY(id_canasta) REFERENCES canastas(id));""")
 
