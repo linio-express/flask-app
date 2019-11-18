@@ -1,0 +1,167 @@
+{% extends "/layouts/layout.html" %}
+{% block content %}
+
+  <!-- Navbar -->
+  {% include '/layouts/_navbar.html' %}
+
+  <!-- Contenido -->
+  <section class="container mx-auto px-4" style="max-width:1080px;">
+    <!-- En caso el usuario haya iniciado sesión, se mostrará su canasta -->
+    {% if canasta is defined %}
+        <div class="mt-4">
+            <h3 style="font-weight: 700;">Esto es lo que hay en tu carrito de compras.</h3>
+        </div>
+        {% for producto_por_canasta in productos_por_canasta %}
+            <div class="row mt-4 text-dark">
+                <div class="col-sm-4 text-center">
+                    <a href="{{ url_for('producto_page.show', id_producto=producto_por_canasta.producto.id) }}">
+                        <img style="max-width:300px;" src="{{ producto_por_canasta.producto.fotos_url[0] }}" class="w-100 scale" alt="...">
+                    </a>
+                </div>
+                <div class="col-sm-8">
+                    <div class="row">
+                        <div class="col-md-8 col-7">
+                            <a class="text-dark" href="{{ url_for('producto_page.show', id_producto=producto_por_canasta.producto.id) }}">
+                                <h4 class="mt-3 d-sm-block d-none" style="font-weight: 600;">{{ producto_por_canasta.producto.nombre }}</h4>
+                                <h5 class="mt-3 d-sm-none d-block" style="font-weight: 600;">{{ producto_por_canasta.producto.nombre }}</h5>
+                            </a>
+                            <h4 class="d-sm-block d-none">Cantidad: {{ producto_por_canasta.cantidad }}</h4>
+                            <h5 class="d-sm-none d-block">Cantidad: {{ producto_por_canasta.cantidad }}</h5>
+                            <button class="btn btn-lg btn-outline-secondary" style="border-radius: 10px;" data-toggle="modal" data-target="#BorrarDeCarrito{{ producto_por_canasta.id }}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                        <div class="col-md-4 col-5 text-left">
+                            <h4 class="mt-3 d-sm-block d-none" style="font-weight: 600;">S/ {{ producto_por_canasta.producto.precio_str }}</h4>
+                            <h5 class="mt-3 d-sm-none d-block" style="font-weight: 600;">S/ {{ producto_por_canasta.producto.precio_str }}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de confirmación de borrar producto de carrito -->
+            <div class="modal fade" id="BorrarDeCarrito{{ producto_por_canasta.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content text-dark" style="border-color: #666666; border-radius: 15px; border-width: 5px;">
+                        <div class="modal-body" style="background-color: white; border-radius: 15px;">
+                            <!-- Botón para cerrar modal -->
+                            <button type="button" class="close mt-1 mr-1" data-dismiss="modal" aria-label="Close">
+                                <i class="fas fa-times"></i>
+                            </button><br>
+                            <!-- Título de modal -->
+                            <h4 class="mt-1 text-center" style="font-weight: 600;">¿Deseas borrar este producto del carrito?</h4>
+                            <!-- Contenido-->
+                            <div class="row mt-3">
+                                <div class="col-sm-5 col-4 text-center">
+                                    <img src="{{ producto_por_canasta.producto.fotos_url[0] }}" class="w-100 ml-3 scale" alt="">
+                                </div>
+                                <div class="col-sm-7 col-8 my-auto">
+                                    <div class="container my-auto">
+                                        <h5 class="text-left mt-2">{{ producto_por_canasta.producto.nombre }}</h5>
+                                        <h5 class="text-left">S/ {{ producto_por_canasta.producto.precio }}</h5>
+                                        <h5 class="text-left">Cantidad: {{ producto_por_canasta.cantidad }}</h5>
+                                    </div>
+                                </div>
+                <form class="w-100 text-center mt-3" action="{{ url_for('producto_por_canasta_page.destroy') }}" method="post">
+                  <input type="hidden" id="id_producto_por_canasta" name="id_producto_por_canasta" value="{{ producto_por_canasta.id }}">
+                  <button class="btn btn-danger w-75 mx-auto"
+                    style="max-width: 225px; min-width: 125px;" href="#">
+                    <strong>Borrar de carrito</strong>
+                  </button>
+                  <div class="container mt-3 mb-3 mx-0 px-0 text-center">
+                    <button class="btn btn-outline-secondary w-75 mx-auto"
+                      style="max-width: 225px; min-width: 125px;" href="#" data-dismiss="modal"
+                      aria-label="Close">
+                      <strong>Cancelar</strong>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="progress mt-4 mb-4" style="height:2px;">
+          <div class="progress-bar" role="progressbar" style="width: 100%; background-color:#C9C9C9;"
+              aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+          </div>
+      </div>
+    {% endfor %}
+    <div class="row mt-4">
+        <div class="col-sm-4"></div>
+        <div class="col-xl-8 col-md-8 col-sm-8">
+            <div class="row">
+                <div class="col-md-8 col-7">
+                    <h4 class="d-sm-block d-none" style="font-weight: 600;">Subtotal</h4>
+                    <h5 class="d-sm-none d-block" style="font-weight: 600;">Subtotal</h5>
+                    <h4 class="d-sm-block d-none" style="font-weight: 600;">Envío</h4>
+                    <h5 class="d-sm-none d-block" style="font-weight: 600;">Envío</h5>
+                </div>
+                <div class="col-md-4 col-5">
+                    <h4 class="d-sm-block d-none" style="font-weight: 600;">S/ {{ canasta.subtotal }}</h4>
+                    <h5 class="d-sm-none d-block" style="font-weight: 600;">S/ {{ canasta.subtotal }}</h5>
+                    <h4 class="d-sm-block d-none" style="font-weight: 600;">S/ 20.00</h4>
+                    <h5 class="d-sm-none d-block" style="font-weight: 600;">S/ 20.00</h5>
+                </div>
+            </div>
+            <div class="progress mt-4 mb-4" style="height:2px;">
+                <div class="progress-bar" role="progressbar" style="width: 100%; background-color:#C9C9C9;"
+                    aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-7">
+                    <h4 class="d-sm-block d-none" style="font-weight: 600;">Total</h4>
+                    <h5 class="d-sm-none d-block" style="font-weight: 600;">Total</h5>
+                </div>
+                <div class="col-md-4 col-5">
+                    <h4 class="d-sm-block d-none" style="font-weight: 600;">S/ {{ canasta.subtotal + 20}}</h4>
+                    <h5 class="d-sm-none d-block" style="font-weight: 600;">S/ {{ canasta.subtotal + 20}}</h5>
+                </div>
+            </div>
+            <form class="" action="{{ url_for('pedido_page.create') }}" method="post">
+              <button class="btn btn-lg btn-primary mt-4 btn-block w-75 mx-auto" style="max-width:300px;"
+                href="home.html">
+                <strong class="text-light">Confirmar pedido</strong>
+              </button>
+            </form>
+        </div>
+      </div>
+    {% else %}
+      <div class="mt-4">
+            <h3 style="font-weight: 700;">Entra a tu cuenta para ver tu carrito o regístrate gratis.</h3>
+      </div>
+
+        <a class="no-underline d-inline-flex mx-1 my-2" href="{{ url_for('session_page.new') }}">
+            <button class="btn btn-lg btn-outline-primary btn-block mx-auto" style="min-width: 200px;">
+                <strong>Iniciar sesión</strong>
+            </button>
+        </a>
+        <a class="no-underline d-inline-flex mx-1 my-2" href="{{ url_for('registration_page.new') }}">
+            <button class="btn btn-lg btn-outline-secondary btn-block mx-auto" style="min-width: 200px;">
+                <strong>Regístrate</strong>
+            </button>
+        </a>
+    {% endif %}
+
+    <div class="row w-100 text-center mx-auto mt-3" style="background-color: #242424; border-radius: 25px;">
+        <div class="col-md-7 col-sm-6 col-12 text-center my-auto">
+            <h4 class="text-light mt-4" style="font-weight: 500;">Novedades</h4>
+            <h5 class="text-light mt-3" style="font-weight: 500;">Echa un vistazo a nuestros últimos productos</h5>
+            <a class="no-underline mx-1 my-2" href="login.html">
+                <button class="btn btn-primary btn-block mx-auto w-25" style="min-width: 200px;">
+                    <strong>Nuevos productos</strong>
+                </button>
+            </a>
+        </div>
+        <div class="col-md-5 col-sm-6 col-12 text-center">
+            <img class="w-75 mb-0 mt-3"
+                src="https://linio-express.s3-sa-east-1.amazonaws.com/ilustraciones/carrito_de_compras.svg" alt="">
+        </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  {% include 'layouts/_footer.html' %}
+
+{% endblock %}

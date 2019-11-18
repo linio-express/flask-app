@@ -3,7 +3,6 @@ from .canasta import Canasta
 from .categoria import Categoria
 from .comercio import Comercio
 from .pedido import Pedido
-from .persona import Persona
 from .producto_por_canasta import ProductoPorCanasta
 from .producto_por_pedido import ProductoPorPedido
 from .producto import Producto

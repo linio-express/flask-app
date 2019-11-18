@@ -1,0 +1,151 @@
+<!-- Navbar -->
+<nav class="navbar navbar-light shadow">
+  <!-- Dropdown menu-->
+  <a href="#" data-toggle="modal" data-target="#menu">
+    <i class="fas fa-bars fa-secondary fa-2x"></i>
+  </a>
+  <!-- Enlace para ir a inicio -->
+  <a href="{{ url_for('inicio_page.inicio') }}">
+    <!-- Logo de Linio -->
+    <img class="mt-1" src="https://upload.wikimedia.org/wikipedia/en/thumb/a/aa/Linio_logo_refresh.svg/1200px-Linio_logo_refresh.svg.png" style="height:47px;">
+  </a>
+
+  <!-- Solo se mostrara este div en pantallas grandes -->
+  <div class="d-none d-md-block mt-2 mb-2">
+    <!-- Formulario de búsqueda -->
+    <form class="form-inline" action="{{ url_for('inicio_page.buscar_productos_por_palabra_clave') }}" method=post>
+      <div class="input-group input-group-lg">
+        <div class="input-group-prepend">
+          <!-- Selector de categorías -->
+          <select name="id_categoria" class="custom-select" id="id_categoria"
+            style="border-radius: 50px 0px 0px 50px; border-width: 2px 1px 2px 2px; height:48px; border-color: #707070;">
+            <option value="0" selected>Todos</option>
+            {% for categoria in session['categorias'] %}
+              <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+            {% endfor %}
+            </select>
+          </div>
+          <input name="texto_a_buscar" id="texto_a_buscar" class="form-control" type="search" placeholder="Buscar productos..." aria-label="Search"
+              style="border-radius: 0px 0px 0px 0px; border-width: 2px 0px 2px 1px; min-width: 300px;">
+          <div class=" input-group-append">
+            <button type="submit" name="button"
+              style="border-radius: 0px 50px 50px 0px; border-width: 2px 2px 2px 0px; border-color: #707070; background-color: white;">
+              <i class="fas fa-primary fa-search mr-2" style="font-size: 24px;"></i>
+            </button>
+          </div>
+        </div>
+    </form>
+  </div>
+
+  <!-- Enlace a página de carrito -->
+  <a href="{{ url_for('canasta_page.show') }}">
+    <i class="fas fa-secondary fa-shopping-cart fa-2x"></i>
+  </a>
+
+  <!-- El div solo se mostrará en móviles -->
+  <div class="d-block d-md-none container w-100 mt-3 mb-3">
+    <!-- Formulario de búsqueda -->
+    <form name="formulario_de_busqueda" class="form-inline w-100" action="{{ url_for('inicio_page.buscar_productos_por_palabra_clave') }}" method=post>
+      <div class="input-group w-100">
+        <div class="input-group-prepend">
+          <!-- selector de categorías -->
+          <select name="id_categoria" class="custom-select pl-3" id="id_categoria"
+            style="border-radius: 50px 0px 0px 50px; border-width: 2px 1px 2px 2px; border-color: #707070;">
+            <option value="0" selected>Todos</option>
+            {% for categoria in session['categorias'] %}
+              <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <input class="form-control" type="search" placeholder="Buscar productos..." aria-label="Search"
+          style="border-radius: 0px 0px 0px 0px; border-width: 2px 0px 2px 1px; border-color: #707070;">
+          <div class="input-group-append">
+            <button type="button" name="button"
+            style="border-radius: 0px 50px 50px 0px; border-width: 2px 2px 2px 0px; border-color: #707070; background-color: white;">
+            <i class="fas fa-primary fa-search mr-1" style="font-size: 20px;"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</nav>
+
+<!-- Menu -->
+<div class="modal fade" id="menu" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="height:100%; margin:0; padding: 0;">
+    <div class="modal-content w-75 ml-0" style="height:100%; margin:0; padding: 0;">
+      <div class="">
+        <button type="button" class="close mt-4 mr-4" data-dismiss="modal" aria-label="Close">
+          <i class="fas fa-times"></i>
+        </button>
+        <div class="text-center bg-gradient-primary text-white container">
+          <a href="{{ url_for('inicio_page.inicio') }}">
+            <img class="w-50 mt-3 mb-3"
+              src="https://upload.wikimedia.org/wikipedia/en/thumb/a/aa/Linio_logo_refresh.svg/1200px-Linio_logo_refresh.svg.png"
+              alt="">
+          </a>
+        </div>
+        <ul class="list-group list-group-flush flex-column px-2">
+          <li class="list-group-item list-group-item-lg list-group-item-action">
+              <a href="{{ url_for('inicio_page.inicio') }}" class="secondary">
+                  <i class="fas fa-home pl-2 pr-3"></i>Inicio
+              </a>
+          </li>
+          <li class="list-group-item list-group-item-lg list-group-item-action">
+              <a href="#" class="secondary dropdown-toggle" role="button" id="dropdownMenuLink"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-th pl-2 pr-3"></i>Categorías
+              </a>
+              <!-- Dropdown menu -->
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <!-- Por cada categoria se crea un enlace -->
+                {% for categoria in session['categorias'] %}
+                  <a class="dropdown-item" href="#">
+                    {{ categoria.nombre }}
+                  </a>
+                {% endfor %}
+              </div>
+          </li>
+          <!-- Si el usuario ha iniciado sesión, se muestran las opciones de pedidos y ajustes de cuenta -->
+          {% if logged_in %}
+            <!-- Opción para ver los pedidos del usuario -->
+            <li class="list-group-item list-group-item-lg list-group-item-action d-flex justify-content-between align-items-center">
+                <a href="{{ url_for('pedido_page.index') }}" class="secondary">
+                    <i class="fas fa-truck pl-2 pr-3"></i>Mis pedidos
+                </a>
+                <span class="badge badge-primary badge-pill">1</span>
+            </li>
+            <!-- Opción para ver ajustes de la cuenta del usuario -->
+            <li class="list-group-item list-group-item-lg list-group-item-action">
+                <a href="#" class="secondary">
+                    <i class="fas fa-cog pl-2 pr-3"></i>Ajustes de cuenta
+                </a>
+            </li>
+          {% endif %}
+        </ul>
+        <div class="container text-center">
+          <!-- Si el usuario no ha iniciado sesión, se muestran los botones de iniciar sesión y registrarse -->
+          {% if not logged_in %}
+            <a class="no-underline" href="{{ url_for('session_page.new') }}">
+              <button class="btn btn-lg btn-outline-primary mt-4 mb-4 btn-block w-75 mx-auto">
+                <strong>Iniciar sesión</strong>
+              </button>
+            </a>
+            <a class="no-underline" href="{{ url_for('registration_page.new') }}">
+              <button class="btn btn-lg btn-outline-secondary mt-4 mb-4 btn-block w-75 mx-auto">
+                <strong>Regístrate</strong>
+              </button>
+            </a>
+          <!-- Si el usuario ha iniciado sesión, se muestra el botón de cerrar sesión -->
+          {% else %}
+            <form action="{{ url_for('session_page.destroy') }}" method="post">
+              <button class="btn btn-lg btn-outline-secondary mt-4 mb-4 btn-block w-75 mx-auto" type="submit">
+                <strong>Cerrar sesión</strong>
+              </button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,30 +1,35 @@
-from flask import Flask
+#Importar librería datetime par fechas
+from datetime import datetime
 
+def toJSON(lista):
+    """Esta función convierte todos los elementos de una lista en JSON. Asume que los elementos de la lista son objetos con un método toJSON() ya definido."""
+    listaJSON = []
+    for objeto in lista:
+        listaJSON.append(objeto.toJSON())
+    return listaJSON
 
-def create_app(config_filename=None):
-    application = Flask(__name__, instance_relative_config=True)
-    application.config.from_pyfile(config_filename)
-    register_blueprints(application)
-    application.secret_key='linioexp'
-    return application
-    application.jinja_env.globals.update(formato_de_precio=formato_de_precio)
+def formato_largo(fecha: datetime):
+    """Recibe una fecha que es un objeto de tipo datetime.
+        Devuelve una cadena de texto con el siguiente formato: {día de la semana} {día del mes}" de {mes}, {año}"""
+    anio=fecha.year
+    mes=fecha.month
+    dia=fecha.day
+    ds = fecha.weekday()
+    dia_sem={0:'lunes',1:'martes', 2:'miércoles', 3:'jueves',4:'viernes',5:'sábado',6:'domingo'}
+    meses = {1:'enero', 2:'febrero', 3:'marzo',4:'abril',5:'mayo',6:'junio',7:'julio', 8:'agosto', 9:'setiembre',10:'octubre',11:'noviembre',12:'diciembre'}
+    return dia_sem[ds] + ' ' + str(dia) + ' de ' + meses[mes] + ', ' + str(anio)
 
-
-def register_blueprints(application):
-    from app.controllers.welcome_controller import inicio_page
-    from app.controllers.productos_controller import producto_page
-    from app.controllers.productos_por_canastas_controller import producto_por_canasta_page
-    from app.controllers.canastas_controller import canasta_page
-    from app.controllers.pedidos_controller import pedido_page
-    from app.controllers.usuarios.sessions_controller import session_page
-    from app.controllers.usuarios.registrations_controller import registration_page
-    application.register_blueprint(inicio_page)
-    application.register_blueprint(producto_page)
-    application.register_blueprint(producto_por_canasta_page)
-    application.register_blueprint(canasta_page)
-    application.register_blueprint(pedido_page)
-    application.register_blueprint(session_page)
-    application.register_blueprint(registration_page)
+def formato_corto(fecha: datetime):
+    """Recibe una fecha que es un objeto de tipo datetime.
+        Devuelve una cadena de texto con el siguiente formato: {día de la semana} {día del mes}" de {mes}, {año}"""
+    anio=fecha.year
+    mes=fecha.month
+    dia=fecha.day
+    if len(str(mes))==1:
+        mes='0'+str(fecha.month)
+    if len(str(dia))==1:
+        dia='0'+str(fecha.day)
+    return str(dia) + '/' + str(mes) + '/' + str(anio)
 
 def formato_de_precio(precio: float):
     precion=precio//1000
@@ -66,8 +71,8 @@ def formato_de_precio(precio: float):
         else:
             if len(str(preciov))!=3:
                 preciov = str(0)*(3-len(str(preciov)))+str(preciov)
-                print(str(int(precion)) + ' ' + preciov + decimalu + decimalu)
-                return str(int(precion)) + ' ' + preciov + decimalu + decimalu
+                print(str(int(precion)) + ' ' + preciov + decimalu)
+                return str(int(precion)) + ' ' + preciov + decimalu
             else:
                 print(str(int(precion)) + ' ' + str(preciov) + decimalu)
                 return str(int(precion)) + ' ' + str(preciov) + decimalu
