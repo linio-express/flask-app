@@ -3,6 +3,10 @@ body{
     padding-right: constant(safe-area-inset-right);
 }
 
+section{
+    max-width:1100px;
+}
+
 button.btn{
     border-radius: 100px;
 }

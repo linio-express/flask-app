@@ -1,14 +1,14 @@
 {% extends "/layouts/layout.html" %}
 {% block content %}
 
-  <!-- Navbar -->
-  {% include '/layouts/_navbar.html' %}
+    <!-- Navbar -->
+    {% include '/layouts/_navbar.html' %}
 
-  <!-- Descripción del producto-->
-  <section class="container mx-auto px-4" style="max-width:1080px;">
+    <!-- Descripción del producto-->
+    <section class="container mx-auto px-4">
     {% if resultados is defined %}
-      <!-- Título -->
-      <div class="mt-4">
+        <!-- Título -->
+        <div class="mt-4">
         {% if len_resultados == 0 %}
           <h3 style="font-weight: 700;">No se encontraron resultados para "".</h3>
         {% else %}
