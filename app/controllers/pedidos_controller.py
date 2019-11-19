@@ -18,23 +18,24 @@ def create():
     nuevo_pedido = Pedido.generar_pedido(id_canasta)
     return redirect(url_for('pedido_page.index'))
 
-@pedido_page.route('/mis_pedidos', methods=['GET'])
-def index():
+@pedido_page.route('/mis_pedidos/<estado>', methods=['GET'])
+def index(estado):
     if session.get('logged_in'):
         usuario = Usuario.obtener(int(session['current_user_id']))
-        pedidos = usuario.buscar_pedidos()
-        return render_template('pedidos/index.html', logged_in=session['logged_in'], pedidos = toJSON(pedidos))
+        pedidos = usuario.buscar_pedidos(estado)
+        return render_template('pedidos/index.html', logged_in=session['logged_in'], pedidos = toJSON(pedidos), usuario = usuario.toJSON(), estado=estado)
     else:
-        return redirect(url_for('inicio_page.inicio'))
+        return redirect(url_for('inicio_page.inicio'), estado=estado)
 
 @pedido_page.route('/pedido/<int:id_pedido>', methods=['GET'])
 def show(id_pedido):
     #Si el usuario está logeado, se busca el pedido
-    if session.get('logged_in') == True:
+    if session.get('logged_in'):
         #Se obtiene el objeto Pedido a partir del id
         pedido = Pedido.obtener(id_pedido)
+        usuario = Usuario.obtener(int(session['current_user_id']))
         productos_por_pedido = pedido.buscar_productos_por_pedido()
-        return render_template('pedidos/show.html', pedido=pedido.toJSON(), productos_por_pedido = toJSON(productos_por_pedido))
+        return render_template('pedidos/show.html', pedido=pedido.toJSON(), productos_por_pedido = toJSON(productos_por_pedido), usuario = usuario.toJSON())
     else:
         session["logged_in"] = False
         session["current_user_id"] = 0

@@ -2,6 +2,7 @@ from flask import Blueprint, render_template
 from flask import session, request
 from datetime import datetime
 from app.models.producto import Producto
+from app.models.usuario import Usuario
 #Importar módulo con funciones de ayuda
 from app.helpers.helper import *
 import os
@@ -14,12 +15,16 @@ def show(id_producto):
     #Se obtiene el objeto Producto a partir del id
     producto = Producto.obtener(id_producto)
 
-    if session.get('logged_in') != True:
+    if session.get('logged_in') == True:
+        usuario = Usuario.obtener(session["current_user_id"])
+        #Se pasan los atributos del producto y del usuario como un JSON
+        return render_template('/productos/show.html', producto=producto.toJSON(), logged_in=session["logged_in"], current_user_id = session["current_user_id"], usuario=usuario.toJSON())
+
+    else:
         session["logged_in"] = False
         session["current_user_id"] = 0
-
-    #Se pasan los atributos del producto como un JSON
-    return render_template('/productos/show.html', producto=producto.toJSON(), logged_in=session["logged_in"], current_user_id = session["current_user_id"])
+        #Se pasan los atributos del producto como un JSON
+        return render_template('/productos/show.html', producto=producto.toJSON(), logged_in=session["logged_in"], current_user_id = session["current_user_id"])
 
 @producto_page.route('/producto/<int:id_producto>', methods=['POST'])
 def nuevo_producto_en_canasta(id_producto):

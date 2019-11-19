@@ -3,6 +3,7 @@ from flask import session, request
 from datetime import datetime
 from app.models.producto import Producto
 from app.models.canasta import Canasta
+from app.models.usuario import Usuario
 from app.models.producto_por_canasta import ProductoPorCanasta
 #Importar módulo con funciones de ayuda
 from app.helpers.helper import *
@@ -16,8 +17,9 @@ def show():
     #Si el usuario está logeado, se busca su canasta
     if session.get('logged_in') == True:
         canasta = Canasta.obtener(session['current_user_id'])
+        usuario = Usuario.obtener(session['current_user_id'])
         productos_por_canasta = canasta.buscar_productos_por_canasta()
-        return render_template('show.html', productos_por_canasta=toJSON(productos_por_canasta), canasta=canasta.toJSON(), logged_in=session["logged_in"], current_user_id=session["current_user_id"])
+        return render_template('show.html', productos_por_canasta=toJSON(productos_por_canasta), canasta=canasta.toJSON(), usuario=usuario.toJSON())
     #Si el usuario no está logeado, no se buscará ninguna canasta
     else:
         session["logged_in"] = False

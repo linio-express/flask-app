@@ -3,6 +3,7 @@ from flask import Blueprint, render_template
 from flask import session, request
 from app.models.producto import Producto
 from app.models.categoria import Categoria
+from app.models.usuario import Usuario
 #Importar módulo con funciones de ayuda
 from app.helpers.helper import *
 import os
@@ -20,10 +21,13 @@ def toJSON(lista):
 def inicio():
     categorias = Categoria.todas()
     session["categorias"] = toJSON(categorias)
-    if session.get('logged_in') != True:
+    if session.get('logged_in') == True:
+        usuario = Usuario.obtener(session["current_user_id"])
+        return render_template('welcome/index.html', logged_in = session["logged_in"], current_user_id = session["current_user_id"], usuario = usuario.toJSON())
+    else:
         session["logged_in"] = False
         session["current_user_id"] = 0
-    return render_template('welcome/index.html', logged_in = session["logged_in"], current_user_id = session["current_user_id"])
+        return render_template('welcome/index.html', logged_in = session["logged_in"], current_user_id = session["current_user_id"])
 
 @inicio_page.route('/buscar', methods=['POST'])
 def buscar_productos_por_palabra_clave():
@@ -47,9 +51,12 @@ def buscar_productos_por_palabra_clave():
     elif (texto_a_buscar != None and texto_a_buscar != "") and id_categoria > 0:
         lista_productos = Producto.listar_productos_nombre(cadena_a_buscar = texto_a_buscar, id_categoria = id_categoria)
 
-    if session.get('logged_in') != True:
-        session["current_user_id"] = 0
-        session["logged_in"] = False
 
     #Finalmente, se retornan los resultados de la búsqueday el resultado de la búsqueda en el view index.html
-    return render_template('productos/index.html', logged_in = session["logged_in"], current_user_id = session["current_user_id"], resultados = toJSON(lista_productos), len_resultados = len(lista_productos), texto_a_buscar=texto_a_buscar)
+    if session.get('logged_in') == True:
+        usuario = Usuario.obtener(session['current_user_id'])
+        return render_template('productos/index.html', logged_in = session["logged_in"], current_user_id = session["current_user_id"], resultados = toJSON(lista_productos), texto_a_buscar=texto_a_buscar, usuario=usuario.toJSON())
+    else:
+        session["current_user_id"] = 0
+        session["logged_in"] = False
+        return render_template('productos/index.html', logged_in = session["logged_in"], current_user_id = session["current_user_id"], resultados = toJSON(lista_productos), texto_a_buscar=texto_a_buscar)

@@ -1,6 +1,5 @@
 from flask import Flask
 
-
 def create_app(config_filename=None):
     application = Flask(__name__, instance_relative_config=True)
     application.config.from_pyfile(config_filename)
@@ -8,7 +7,6 @@ def create_app(config_filename=None):
     application.secret_key='linioexp'
     return application
     application.jinja_env.globals.update(formato_de_precio=formato_de_precio)
-
 
 def register_blueprints(application):
     from app.controllers.welcome_controller import inicio_page
@@ -18,6 +16,7 @@ def register_blueprints(application):
     from app.controllers.pedidos_controller import pedido_page
     from app.controllers.usuarios.sessions_controller import session_page
     from app.controllers.usuarios.registrations_controller import registration_page
+    from app.controllers.categorias_controller import categoria_page
     application.register_blueprint(inicio_page)
     application.register_blueprint(producto_page)
     application.register_blueprint(producto_por_canasta_page)
@@ -25,6 +24,7 @@ def register_blueprints(application):
     application.register_blueprint(pedido_page)
     application.register_blueprint(session_page)
     application.register_blueprint(registration_page)
+    application.register_blueprint(categoria_page)
 
 def formato_de_precio(precio: float):
     precion=precio//1000
