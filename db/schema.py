@@ -196,4 +196,11 @@ def crear_tabla_productos_por_canasta(db):
 #Abrir db
 db = sqlite3.connect("linio.db")
 
-drop(db)
+crear_tabla_comercios(db)
+crear_tabla_categorias(db)
+crear_tabla_usuarios(db)
+crear_tabla_canastas(db)
+crear_tabla_pedidos(db)
+crear_tabla_productos(db)
+crear_tabla_productos_por_pedido(db)
+crear_tabla_productos_por_canasta(db)
