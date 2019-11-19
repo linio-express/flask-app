@@ -7,61 +7,70 @@
     <!-- Página de inicio -->
     <section class="container mx-auto px-4">
 
+        <!-- Banner de bienvenida a Linio -->
         <div class="row w-100 text-center mx-auto mt-5" style="background-color: #F2F2F2; border-radius: 40px;">
             <div class="col-md-6 col-sm-6 col-12 text-center my-auto px-5">
                 {% if logged_in is defined and logged_in %}
-                    <h2 class="text-dark mt-4" style="font-weight: 700;">Hola, Paolo.</h2>
-                    <h3 class="text-dark mt-2 mb-4" style="font-weight: 700;">Tenemos los mejores productos en todas las
-                        categorías para tí.</h3>
+                    <h2 class="text-dark mt-4 fade-in" style="font-weight: 700;">Hola, .</h2>
+                    <h3 class="text-dark mt-2 mb-4 fade-in" style="font-weight: 700;">
+                        Tenemos los mejores productos en todas las categorías para tí.
+                    </h3>
                 {% else %}
-                    <h3 class="text-dark mt-2 mb-4" style="font-weight: 700;">Los mejores productos en todas las
+                    <h3 class="text-dark mt-2 mb-4 fade-in" style="font-weight: 700;">Los mejores productos en todas las
                     categorías.</h3>
                 {% endif %}
             </div>
             <div class="col-md-6 col-sm-6 col-12 text-left">
-                <img class="w-100 mb-0 mt-0"
+                <img class="w-100 mb-0 mt-0 fade-in"
                     src="https://linio-express.s3-sa-east-1.amazonaws.com/ilustraciones/undraw_add_to_cart_vkjp.svg"
                     alt="">
             </div>
         </div>
-        <div class="row mt-4">
-            <div class="col">
-                <h3 style="font-weight: 700;">Categorías</h3>
-            </div>
-            <div class="col text-right">
-                <a href="#" class="text-primary">
-                    <h4 class="pt-1 px-2">Ver todas las categorías...</h4>
-                </a>
-            </div>
-        </div>
 
-        <div class="text-center d-flex mx-auto px-0 mt-1"
-            style="overflow-x: auto; overflow-y: hidden; max-width:1100px; -webkit-overflow-scrolling: touch;">
-            {% for categoria in session['categorias'] %}
-                <a href="#">
+        <!-- Categorías de productos -->
+        {% if session['categorias']|count > 0 %}
+            <div class="row mt-4">
+                <!-- Título -->
+                <div class="col">
+                    <h3 style="font-weight: 700;">Categorías</h3>
+                </div>
+                <!-- Enlace para ver todas las categorías -->
+                <div class="col text-right">
+                    <a href="#" class="text-primary">
+                        <h4 class="d-none d-sm-block pt-1 px-2">Ver todas las categorías...</h4>
+                        <h5 class="d-sm-none d-block pt-1 px-2" style="font-weight: 600; color:#ff5500;">Ver más</h5>
+                    </a>
+                </div>
+            </div>
+            <!-- Barra deslizable de iconos de categorias -->
+            <div class="text-center d-flex mx-auto px-0 mt-1"
+                style="overflow-x: auto; overflow-y: hidden; max-width:1100px; -webkit-overflow-scrolling: touch;">
+                <a href="{{ url_for('categoria_page.show', id_categoria = session['categorias'][0].id) }}">
                     <div class="d-inline-blockalign-top category text-center p-3" style="background-color: #F2F2F2;">
                         <div class="d-flex align-items-center" style="height:115px;">
                             <img class="w-50 mx-auto py-auto scale"
-                                src="https://linio-express.s3-sa-east-1.amazonaws.com/iconos/arte.svg" alt="">
+                                src="{{ session['categorias'][0].icono_url }}" alt="">
                         </div>
                         <div style="min-height: 80px;">
-                            <h5 class="text-dark" style="font-weight: 500;">Arte y artesanías</h5>
+                            <h5 class="text-dark" style="font-weight: 500;">{{ session['categorias'][0].nombre }}</h5>
                         </div>
                     </div>
                 </a>
-            {% endfor %}
-            <a href="#">
-                <div class="d-inline-block ml-3 align-top category text-center p-3" style="background-color: #F2F2F2;">
-                    <div class="d-flex align-items-center" style="height:115px;">
-                        <img class="w-50 mx-auto scale"
-                            src="https://linio-express.s3-sa-east-1.amazonaws.com/iconos/belleza.svg" alt="">
-                    </div>
-                    <div style="min-height: 80px;">
-                        <h5 class="text-dark" style="font-weight: 500;">Belleza y cuidado personal</h5>
-                    </div>
-                </div>
-            </a>
-        </div>
+                {% for i in range(1, session['categorias']|count) %}
+                    <a href="{{ url_for('categoria_page.show', id_categoria = session['categorias'][i].id) }}">
+                        <div class="d-inline-bloc ml-3 kalign-top category text-center p-3" style="background-color: #F2F2F2;">
+                            <div class="d-flex align-items-center" style="height:115px;">
+                                <img class="w-50 mx-auto py-auto scale"
+                                    src="{{ session['categorias'][i].icono_url }}" alt="">
+                            </div>
+                            <div style="min-height: 80px;">
+                                <h5 class="text-dark" style="font-weight: 500; overflow:scroll">{{ session['categorias'][i].nombre }}</h5>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
 
         <div class="row mt-4">
             <div class="col">
@@ -69,7 +78,8 @@
             </div>
             <div class="col text-right">
                 <a href="#" class="text-primary">
-                    <h4 class="pt-1 px-2">Ver todos los productos...</h4>
+                    <h4 class="d-sm-block d-none pt-1 px-2">Ver todos los productos...</h4>
+                    <h5 class="d-sm-none d-block pt-1 px-2" style="font-weight: 600; color:#ff5500;">Ver más</h5>
                 </a>
             </div>
         </div>

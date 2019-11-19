@@ -5,18 +5,23 @@
   {% include '/layouts/_navbar.html' %}
 
   <!-- Contenido -->
-  <section class="container mx-auto px-4">
+  <section class="container mx-auto px-4 fade-in">
     <!-- En caso el usuario haya iniciado sesión, se mostrará su canasta -->
     {% if canasta is defined %}
-        <div class="mt-4">
-            <h3 style="font-weight: 700;">Esto es lo que hay en tu carrito de compras.</h3>
-        </div>
-        {% for producto_por_canasta in productos_por_canasta %}
-            <div class="row mt-4 text-dark">
-                <div class="col-sm-4 text-center">
-                    <a href="{{ url_for('producto_page.show', id_producto=producto_por_canasta.producto.id) }}">
-                        <img style="max-width:300px;" src="{{ producto_por_canasta.producto.fotos_url[0] }}" class="w-100 scale" alt="...">
-                    </a>
+        {% if productos_por_canasta|count == 0 %}
+            <div class="mt-4">
+                <h3 style="font-weight: 700;">No has agregado ningún producto a tu canasta 🤭.</h3>
+            </div>
+        {% else %}
+            <div class="mt-4">
+                <h3 style="font-weight: 700;">Esto es lo que hay en tu carrito de compras.</h3>
+            </div>
+            {% for producto_por_canasta in productos_por_canasta %}
+                <div class="row mt-4 text-dark">
+                    <div class="col-sm-4 text-center">
+                        <a href="{{ url_for('producto_page.show', id_producto=producto_por_canasta.producto.id) }}">
+                            <img style="max-width:300px;" src="{{ producto_por_canasta.producto.fotos_url[0] }}" class="w-100 scale" alt="...">
+                        </a>
                 </div>
                 <div class="col-sm-8">
                     <div class="row">
@@ -125,8 +130,9 @@
                 <strong class="text-light">Confirmar pedido</strong>
               </button>
             </form>
-        </div>
-      </div>
+                </div>
+            </div>
+        {% endif %}
     {% else %}
       <div class="mt-4">
             <h3 style="font-weight: 700;">Entra a tu cuenta para ver tu carrito o regístrate gratis.</h3>

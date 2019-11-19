@@ -5,17 +5,25 @@
     {% include '/layouts/_navbar.html' %}
 
     <!-- Descripción del producto-->
-    <section class="container mx-auto px-4">
+    <section class="container mx-auto px-4 fade-in">
     {% if resultados is defined %}
         <!-- Título -->
         <div class="mt-4">
-        {% if len_resultados == 0 %}
-          <h3 style="font-weight: 700;">No se encontraron resultados para "".</h3>
-        {% else %}
-          <h3 style="font-weight: 700;">Resultados de búsqueda para "{{ texto_a_buscar }}".</h3>
-        {% endif %}
-      </div>
-      {% if len_resultados > 0 %}
+            {% if texto_a_buscar is defined %}
+                {% if resultados|count == 0 %}
+                  <h3 style="font-weight: 700;">No se encontraron resultados para "{{ texto_a_buscar }}".</h3>
+                {% else %}
+                  <h3 style="font-weight: 700;">Resultados de búsqueda para "{{ texto_a_buscar }}".</h3>
+                {% endif %}
+            {% endif %}
+            {% if categoria is defined %}
+                <h3 style="font-weight: 700;">
+                    Resultados para la categoría "{{ categoria.nombre }}".
+                </h3>
+            {% endif %}
+        </div>
+
+        {% if resultados|count > 0 %}
         <!-- Productos encontrados -->
         <div class="row mt-4 text-center productos">
           {% for producto in resultados %}
@@ -30,15 +38,21 @@
                 <h5 style="font-weight:600;">S/ {{ producto.precio_str }}</h5>
               </a>
 
-              <!-- Botón para agregar al carrito -->
-              <button class="btn btn-outline-primary mt-4 btn-block w-75 mx-auto" data-toggle="modal"
-                data-target="#AgregarCarrito{{ producto.id }}" href="home.html">
+              <!-- Botón para agregar al carrito para pantallas anchas -->
+              <button class="btn btn-outline-primary mt-4 btn-block w-75 mx-auto d-none d-md-block" data-toggle="modal"
+                data-target="#AgregarCarrito{{ producto.id }}" style="min-width:160px;">
                 <strong class="">Agregar a carrito</strong>
+              </button>
+
+              <!-- Botón para agregar al carrio para pantallas móviles -->
+              <button class="btn btn-outline-primary mt-4 btn-block w-75 mx-auto d-block d-md-none" data-toggle="modal"
+                data-target="#AgregarCarrito{{ producto.id }}" style="min-width:125px;">
+                <strong class="">Agregar a <i class="fas fa-cart-plus"></i></strong>
               </button>
 
               <!-- Botón para ver más detalles -->
               <a href="{{ url_for('producto_page.show', id_producto=producto.id) }}">
-                <button class="btn btn-outline-secondary mt-3 mb-3 btn-block w-75 mx-auto" href="home.html">
+                <button class="btn btn-outline-secondary mt-3 mb-3 btn-block w-75 mx-auto" style="min-width:125px;">
                   <strong class="">Más detalles</strong>
                 </button>
               </a>
