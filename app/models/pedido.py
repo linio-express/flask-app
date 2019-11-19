@@ -10,6 +10,8 @@ from app.helpers.helper import *
 
 class Pedido(object):
 
+    #posibles_estados = ['Cancelado', 'En Progreso (Pago y dirección pendientes)', 'En Progreso (Pago pendiente)', 'En Progreso (Dirección pendiente)', 'En Progreso (Pago rechazado)', 'En Progreso (Pago rechazado y dirección pendiente)', 'En Progreso (Preparando paquete)'. 'Enviado', 'Entregado']
+
     def __init__(self, id: int = None, usuario = Usuario(), tarifa_de_envio: float = None, fecha_de_creacion: datetime = None, fecha_de_actualizacion: datetime = None, estado: str = None, repartidor: str = None, productos: list = None, metodo_de_pago: str = None, direccion_de_envio: str = None, fecha_de_envio: datetime = None, fecha_de_pago: datetime = None, fecha_de_entrega: datetime = None):
         self.__id = id
         self.__usuario = usuario

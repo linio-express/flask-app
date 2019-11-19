@@ -30,7 +30,7 @@ class Usuario(object):
         return "id: " + self.id
 
     def toJSON(self):
-        return {"id": self.id, "dni": self.dni, "nombre_completo": self.nombre_completo}
+        return {"id": self.id, "dni": self.dni, "nombre_completo": self.nombre_completo, "numero_de_pedidos_en_progreso": self.numero_de_pedidos_en_progreso()}
 
     @property
     def id(self):
@@ -205,7 +205,7 @@ class Usuario(object):
                 celular = usuario[4], numero_de_tarjeta = usuario[5], nombre_de_usuario = usuario[6], password = usuario[7],
                 fecha_de_creacion = usuario[8], fecha_de_actualizacion = usuario[9], correo = usuario[11])
 
-    def buscar_pedidos(self):
+    def buscar_pedidos(self, estado: str = None):
         """Busca todos los pedidos del usuario en la db.
             Devuelve una lista donde cada elemento es un objeto de tipo pedido"""
         pedidos = []
@@ -217,6 +217,12 @@ class Usuario(object):
             cursor = db.cursor()
             #Query de tipo SELECT
             query = """SELECT * FROM pedidos WHERE id_usuario = {}""".format(self.id)
+            if estado == "en_progreso":
+                query += """ AND estado LIKE 'En Progreso%'"""
+            elif estado == "enviado":
+                query += """ AND estado LIKE 'Enviado%'"""
+            elif estado == "entregado":
+                query += """ AND estado LIKE 'Entregado%'"""
             #Imprimir query a ejecutar
             print("\033[38;5;57m" + "\033[1m" + query + "\033[0m")
             cursor.execute(query)
@@ -357,22 +363,23 @@ class Usuario(object):
             db.close()
             return estado
 
-    @staticmethod
-    def todos():
-        """Devuelve una lista con todos los usuarios en la db"""
+    def numero_de_pedidos_en_progreso(self):
+        """Calcula los pedidos en progreso del usuario."""
+        numero_de_pedidos = 0
         try:
             #Conexión a la base de datos usando ruta de archivo de configuración
             db = sqlite3.connect(Config.get("DATABASE"), detect_types=sqlite3.PARSE_DECLTYPES)
             #Objeto cursor
             cursor = db.cursor()
-            query = """SELECT * FROM usuarios;""".format(id)
+            query = """SELECT COUNT(*) FROM pedidos WHERE estado LIKE 'En Progreso%' AND id_usuario = {};""".format(self.id)
             #Imprimir query a ejecutar
             print("\033[38;5;57m" + "\033[1m" + query + "\033[0m")
             cursor.execute(query)
-            resultado = cursor.fetchall()
+            numero_de_pedidos = cursor.fetchone()
+            numero_de_pedidos = int(numero_de_pedidos[0])
         except Exception as e:
             print("Error: {}".format(e))
         finally:
             #Cerrar conexión de db
             db.close()
-            print(resultado)
+            return numero_de_pedidos
