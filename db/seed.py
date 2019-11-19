@@ -23,7 +23,8 @@ queries = []
 comercios = """INSERT INTO comercios(nombre, direccion, ruc, logo_url)
     VALUES ("iShop Perú", " Av. Ricardo Rivera Navarrete Nro. 475 Int. 1004, San Isidro.", "20600739477", "https://linio-express.s3-sa-east-1.amazonaws.com/comercios/ishop.jpg"),
     ("Samsung Perú", "Av. Rivera Navarrete Nro. 501 (Piso 6), San Isidro.", "20300263578", "https://linio-express.s3-sa-east-1.amazonaws.com/comercios/samsung.png"),
-    ("LEGO Perú", "Av. Paseo de la Republica Nro. 3220, San Isidro", "20100128056", "https://linio-express.s3-sa-east-1.amazonaws.com/comercios/lego.png")"""
+    ("LEGO Perú", "Av. Paseo de la Republica Nro. 3220, San Isidro", "20100128056", "https://linio-express.s3-sa-east-1.amazonaws.com/comercios/lego.png"),
+    ("TAG Heuer", "Av. Santa Cruz 301, Miraflores", "20897813911", "https://linio-express.s3-sa-east-1.amazonaws.com/comercios/TAG_Heuer_Logo.svg")"""
 queries.append(comercios)
 
 categorias = """INSERT INTO categorias(nombre, icono_url)
@@ -31,7 +32,7 @@ categorias = """INSERT INTO categorias(nombre, icono_url)
 queries.append(categorias)
 
 productos = """INSERT INTO productos(nombre, descripcion, fotos_url, precio, stock, id_categoria, id_comercio)
-    VALUES ('Apple iPhone 11 Pro 64GB', 'Un revolucio­nario sistema de triple cámara que multiplica las posibilidades de
+    VALUES ('Apple iPhone 11 Pro 64gb', 'Un revolucio­nario sistema de triple cámara que multiplica las posibilidades de
     la forma más sencilla. Un salto sin precedentes en la autonomía. Un portento de chip que dobla la apuesta por
     el aprendizaje automático y redefine lo que es posible para un móvil. Ha habido otros iPhone, pero solo este
     se ha ganado el derecho a llamarse Pro.', 'https://linio-express.s3-sa-east-1.amazonaws.com/productos/iphone11pro/iphone-11-pro-midnight-green-select-2019.png', 3500, 5, 2, 1),
@@ -46,15 +47,20 @@ productos = """INSERT INTO productos(nombre, descripcion, fotos_url, precio, sto
     https://linio-express.s3-sa-east-1.amazonaws.com/productos/cargador_inalambrico_airpods/MR8U2_AV2.jpeg, https://linio-express.s3-sa-east-1.amazonaws.com/productos/cargador_inalambrico_airpods/MR8U2_AV3.jpeg', 390, 11, 2, 1),
     ('Apple iPhone 11 64GB Verde', 'descripcion', 'https://linio-express.s3-sa-east-1.amazonaws.com/productos/iphone11/iphone11-green-select-2019.png', 1700, 5, 2, 1),
     ('Apple iPhone 11 64GB Amarillo', 'descripcion', 'https://linio-express.s3-sa-east-1.amazonaws.com/productos/iphone11/iphone11-yellow-select-2019.png', 1700, 10, 2, 1),
-    ('Apple iPhone 11 64GB Negro', 'descripcion', 'https://linio-express.s3-sa-east-1.amazonaws.com/productos/iphone11/iphone11-black-select-2019.png', 1700, 10, 3, 1),
-    ('Apple iPhone 11 64FB Rojo', 'descripcion', 'https://linio-express.s3-sa-east-1.amazonaws.com/productos/iphone11/iphone11-red-select-2019.png', 1700, 15, 2, 1),
+    ('Apple iPhone 11 64GB Negro', 'descripcion', 'https://linio-express.s3-sa-east-1.amazonaws.com/productos/iphone11/iphone11-black-select-2019.png', 1700, 10, 2, 1),
+    ('Apple iPhone 11 64GB Rojo', 'descripcion', 'https://linio-express.s3-sa-east-1.amazonaws.com/productos/iphone11/iphone11-red-select-2019.png', 1700, 15, 2, 1),
     ('LEGO Technic Porsche 911 GT3 RS', 'Experimenta el emblemático Porsche 911 GT3 RS con esta auténtica réplica LEGO®
     Technic. Dentro de la caja encontrarás un libro especial para coleccionistas acerca de la historia de LEGO Technic y
     los modelos GT de Porsche, así como 4 llantas de diseño especial con el emblema de la gama RS. Los elementos se entregan
     en diferentes cajas y la construcción se lleva a cabo en el mismo orden en el que se ensamblan los vehículos en la vida
     real.', 'https://linio-express.s3-sa-east-1.amazonaws.com/productos/Juguetes/LegoTechnic911GT3RS/91eOW8yziNL._AC_SL1500_.jpg,
     https://linio-express.s3-sa-east-1.amazonaws.com/productos/Juguetes/LegoTechnic911GT3RS/611lLgb6TLL._AC_SL1000_.jpg, https://linio-express.s3-sa-east-1.amazonaws.com/productos/Juguetes/LegoTechnic911GT3RS/9151mHylI3L._AC_SL1500_.jpg,
-    https://linio-express.s3-sa-east-1.amazonaws.com/productos/Juguetes/LegoTechnic911GT3RS/91pDCHxZK7L._AC_SL1500_.jpg', 700, 3, 7, 3)"""
+    https://linio-express.s3-sa-east-1.amazonaws.com/productos/Juguetes/LegoTechnic911GT3RS/91pDCHxZK7L._AC_SL1500_.jpg', 700, 3, 7, 3),
+    ('Apple MacBook Pro 16 Gris Espacial', 'descripcion', 'https://linio-express.s3-sa-east-1.amazonaws.com/productos/MacBookPro16Grey/mbp16touch-space-gallery1-201911.jpeg, https://linio-express.s3-sa-east-1.amazonaws.com/productos/MacBookPro16Grey/mbp16touch-space-gallery2-201911.jpeg, https://linio-express.s3-sa-east-1.amazonaws.com/productos/MacBookPro16Grey/mbp16touch-space-gallery3-201911.jpeg, https://linio-express.s3-sa-east-1.amazonaws.com/productos/MacBookPro16Grey/mbp16touch-space-gallery4-201911.jpeg', 5000, 10, 2, 1),
+    ('Apple iPhone 11 Pro Max 64GB', 'descripcion', 'https://linio-express.s3-sa-east-1.amazonaws.com/productos/iphone11promax/iphone-11-pro-max-midnight-green-select-2019.png', 4000, 20, 2, 1),
+    ('Apple MacBook Pro 15 Gris Espacial', 'descripcion', 'https://linio-express.s3-sa-east-1.amazonaws.com/productos/MacBookPro15TouchBarGrey/mbp15touch-space-gallery1-201807.jpeg, https://linio-express.s3-sa-east-1.amazonaws.com/productos/MacBookPro15TouchBarGrey/mbp15touch-space-gallery2-201807_GEO_US.jpeg, https://linio-express.s3-sa-east-1.amazonaws.com/productos/MacBookPro15TouchBarGrey/mbp15touch-space-gallery3-201610.jpeg, https://linio-express.s3-sa-east-1.amazonaws.com/productos/MacBookPro15TouchBarGrey/mbp15touch-space-gallery4-201610.jpeg', 4500, 20, 2, 1),
+    ('Lego Technic Bugatti Chiron', 'descripcion', 'https://linio-express.s3-sa-east-1.amazonaws.com/productos/LegoTechnicBugattiChiron/81In5bbt40L._AC_SL1500_.jpg, https://linio-express.s3-sa-east-1.amazonaws.com/productos/LegoTechnicBugattiChiron/81Tiy8Ww%2BxL._AC_SL1500_.jpg, https://linio-express.s3-sa-east-1.amazonaws.com/productos/LegoTechnicBugattiChiron/81nSVBZ8EUL._AC_SL1500_.jpg, https://linio-express.s3-sa-east-1.amazonaws.com/productos/LegoTechnicBugattiChiron/91B2ftaRW7L._AC_SL1500_.jpg, https://linio-express.s3-sa-east-1.amazonaws.com/productos/LegoTechnicBugattiChiron/716AJ2jpgRL._AC_SL1500_.jpg, https://linio-express.s3-sa-east-1.amazonaws.com/productos/LegoTechnicBugattiChiron/71St4QL1z%2BL._AC_SL1000_.jpg, https://linio-express.s3-sa-east-1.amazonaws.com/productos/LegoTechnicBugattiChiron/8146hMBYeJL._AC_SL1500_.jpg', 700, 25, 7, 3),
+    ('TAG Heuer Carrera Calibre Heuer 01', 'SIÉNTESE AL VOLANTE. Velocidad. Sudor. Fuerza. Jack Heuer creó el reloj Carrera en 1963 como homenaje a la famosa Carrera Panamericana, considerada por muchos la carrera automovilística más peligrosa el mundo. Este reloj, tan apasionante como la carrera que inspiró su creación, rompió las reglas de la fabricación de relojes y fue el primer cronógrafo especialmente diseñado para los pilotos profesionales, pero se convirtió también en el compañero ideal para salir a la carretera o para el día a día gracias a su diseño más sencillo, elegante y legible. Jack Heuer rompió las reglas de la fabricación de relojes, y desde entonces TAG Heuer no ha dejado de combinar forma y función. El Carrera rinde homenaje a los locos de la velocidad, los audaces y los soñadores que luchan contra en tiempo sin bajar jamás el ritmo.', 5000, 2, 3, 4)"""
 queries.append(productos)
 
 insertar_datos(db, queries)
