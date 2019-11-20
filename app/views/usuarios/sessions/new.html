@@ -20,18 +20,18 @@
           </div>
 
         <!-- Formulario de inicio de sesión -->
-        <form class="form mx-auto w-100 mt-3" role="form" autocomplete="off" id="loginForm" novalidate=""
+        <form class="form mx-auto w-100 mt-3" role="form" autocomplete="off" id="loginForm"
             method="POST">
 
             <!-- Input de correo electrónico o nombre de usuario-->
             <input type="email" class="form-control form-control-lg" name="correo" id="correo" required="true"
-                placeholder="Email o nombre de usuario"
+                placeholder="Correo electrónico"
                 oninvalid="this.setCustomValidity('Ingresa tu correo electrónico')"
                 oninput="this.setCustomValidity('')" />
 
             <!-- Input de contraseña -->
             <input type="password" class="form-control form-control-lg mt-3" name="password" id="password" required="true"
-                placeholder="Contraseña" oninvalid="this.setCustomValidity('Ingresa tu correo electrónico')"
+                placeholder="Contraseña" oninvalid="this.setCustomValidity('Ingresa tu contraseña')"
                 oninput="this.setCustomValidity('')" />
 
             <!-- Botón para enviar formulario-->

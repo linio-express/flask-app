@@ -34,7 +34,7 @@ def create():
     anho = int(request.form['fecha_de_nacimiento_anho'])
     usuario.fecha_nacimiento = datetime(anho, mes, dia)
     usuario.numero_de_tarjeta = request.form['numero_de_tarjeta']
-    if usuario.es_mayor_de_edad() and usuario.nombre_completo_es_valido() and nombre_de_usuario_es_unico():
+    if usuario.es_mayor_de_edad() and usuario.nombre_completo_es_valido():
         if usuario.crear():
             #Se logea al usuario automaticamente
             session['logged_in'] = True

@@ -16,7 +16,7 @@ pedido_page = Blueprint('pedido_page', 'api', template_folder=template_dir)
 def create():
     id_canasta = int(session["current_user_id"])
     nuevo_pedido = Pedido.generar_pedido(id_canasta)
-    return redirect(url_for('pedido_page.show(id_canasta)'))
+    return redirect(url_for('pedido_page.show', id_pedido = nuevo_pedido.id))
 
 @pedido_page.route('/mis_pedidos/<estado>', methods=['GET'])
 def index(estado):
@@ -65,6 +65,23 @@ def cancelar_pedido():
 
 @pedido_page.route('/elegir_metodo_de_pago', methods=['POST'])
 def elegir_metodo_de_pago():
+    opcion = request.form['metodo_de_pago']
+    id_pedido = request.form['id_pedido']
+    pedido = Pedido.obtener(id_pedido)
+    if opcion == "tarjeta":
+        pedido.metodo_de_pago = "Tarjeta de crédito/débito"
+    if opcion == "efectivo":
+        pedido.metodo_de_pago = "Efectivo"
+    if pedido.direccion_de_envio == '':
+        pedido.estado = "En Progreso (Dirección pendiente)"
+    else:
+        pedido.estado = "En Progreso (Preparando paquete)"
+    pedido.fecha_de_pago = datetime.now
+    pedido.actualizar()
+    return redirect(url_for('pedido_page.show', id_pedido = id_pedido))
+
+@pedido_page.route('/pagar_pedido', methods=['POST'])
+def pagar_pedido():
     opcion = request.form['metodo_de_pago']
     id_pedido = request.form['id_pedido']
     pedido = Pedido.obtener(id_pedido)

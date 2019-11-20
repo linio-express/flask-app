@@ -23,7 +23,7 @@ class ProductoPorCanasta(object):
         return "id = {}, id_canasta = {}, id_producto = {}, cantidad = {}".format(self.id, self.canasta.id, self.producto.id, self.cantidad)
 
     def toJSON(self):
-        return {"id": self.id, "producto": self.producto.toJSON(), "cantidad": self.cantidad}
+        return {"id": self.id, "producto": self.producto.toJSON(), "cantidad": self.cantidad, "subtotal": formato_de_precio(self.subtotal())}
 
     @property
     def id(self):
@@ -181,3 +181,6 @@ class ProductoPorCanasta(object):
             print("No se pudo encontrar un producto_por_pedido con el id:", id)
         else:
             return ProductoPorCanasta(id = producto_por_canasta[0], producto = Producto.obtener(producto_por_canasta[1]), canasta = Canasta.obtener(producto_por_canasta[2]), cantidad = producto_por_canasta[3], fecha_de_creacion = producto_por_canasta[4], fecha_de_actualizacion = producto_por_canasta[5])
+
+    def subtotal(self):
+        return self.cantidad * self.producto.precio

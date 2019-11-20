@@ -15,7 +15,7 @@ canasta_page = Blueprint('canasta_page', 'api', template_folder=template_dir)
 @canasta_page.route('/canasta', methods=['GET'])
 def show():
     #Si el usuario está logeado, se busca su canasta
-    if session.get('logged_in') == True:
+    if session.get('logged_in'):
         canasta = Canasta.obtener(session['current_user_id'])
         usuario = Usuario.obtener(session['current_user_id'])
         productos_por_canasta = canasta.buscar_productos_por_canasta()

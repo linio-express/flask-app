@@ -31,7 +31,7 @@ class Pedido(object):
         pass
 
     def toJSON(self):
-        return {"id": self.__id, "tarifa_de_envio": self.__tarifa_de_envio, "estado": self.__estado, "repartidor": self.__repartidor, "metodo_de_pago": self.__metodo_de_pago, "direccion_de_envio": self.__direccion_de_envio, "fecha_de_creacion": self.fecha_de_creacion, "fecha_de_creacion_str": formato_corto(self.fecha_de_creacion), "precio_total": self.precio_total(), "precio_total_str": formato_de_precio(self.precio_total()), "cantidad_total": int(self.cantidad_total()), "productos_str": self.productos_str(), "subtotal_str": formato_de_precio(self.subtotal()), "tarifa_de_envio_str": formato_de_precio(self.tarifa_de_envio)}
+        return {"id": self.__id, "tarifa_de_envio": self.__tarifa_de_envio, "estado": self.__estado, "repartidor": self.__repartidor, "metodo_de_pago": self.__metodo_de_pago, "direccion_de_envio": self.__direccion_de_envio, "fecha_de_creacion": self.fecha_de_creacion, "fecha_de_creacion_str": formato_corto(self.fecha_de_creacion), "precio_total": self.precio_total(), "precio_total_str": formato_de_precio(self.precio_total()), "cantidad_total": int(self.cantidad_total()), "productos_str": self.productos_str(), "subtotal_str": formato_de_precio(self.subtotal()), "tarifa_de_envio_str": formato_de_precio(self.tarifa_de_envio), "fecha_de_pago_str": formato_largo(self.fecha_de_pago)}
 
     @property
     def id(self):

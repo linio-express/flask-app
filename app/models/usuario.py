@@ -30,7 +30,7 @@ class Usuario(object):
         return "id: " + self.id
 
     def toJSON(self):
-        return {"id": self.id, "dni": self.dni, "nombre_completo": self.nombre_completo, "numero_de_pedidos_en_progreso": self.numero_de_pedidos_en_progreso()}
+        return {"id": self.id, "dni": self.dni, "nombre_completo": self.nombre_completo, "numero_de_pedidos_en_progreso": self.numero_de_pedidos_en_progreso(), "primer_nombre": self.primer_nombre()}
 
     @property
     def id(self):
@@ -218,11 +218,11 @@ class Usuario(object):
             #Query de tipo SELECT
             query = """SELECT * FROM pedidos WHERE id_usuario = {}""".format(self.id)
             if estado == "en_progreso":
-                query += """ AND estado LIKE 'En Progreso%'"""
-            elif estado == "enviado":
-                query += """ AND estado LIKE 'Enviado%'"""
+                query += """ AND estado LIKE 'En Progreso%' OR estado LIKE 'Enviado';"""
             elif estado == "entregado":
                 query += """ AND estado LIKE 'Entregado%'"""
+            elif estado == "cancelado":
+                query += """ AND estado LIKE 'Cancelado%'"""
             #Imprimir query a ejecutar
             print("\033[38;5;57m" + "\033[1m" + query + "\033[0m")
             cursor.execute(query)
@@ -253,7 +253,7 @@ class Usuario(object):
         #Se comeinza asumiendo que el nombre es valido
         nombre_completo_es_valido = True
         #Se establece una lisrta con caracteres especiales
-        caracteres_especiales = ['$', '@', '%', '/', '-', '_', '.', '*', '+', '']
+        caracteres_especiales = ['$', '@', '%', '/', '-', '_', '.', '*', '+', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
         #Se busca cada caracter en la cadena de texto nombre_completo
         for caracter in caracteres_especiales:
             if caracter in self.nombre_completo:
@@ -383,3 +383,10 @@ class Usuario(object):
             #Cerrar conexión de db
             db.close()
             return numero_de_pedidos
+
+    def primer_nombre(self):
+        if self.nombre_completo.find(' ') > 0:
+            primer_nombre = self.nombre_completo[0: self.nombre_completo.find(' ')]
+        else:
+            primer_nombre = self.nombre_completo
+        return primer_nombre

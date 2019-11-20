@@ -49,7 +49,15 @@
             <div class="card text-dark mt-4">
                 <div class="row">
                     <div class="col-md-3 col-sm-2 col-1 my-auto text-center">
-                        <i class="fas fa-box-open secondary fa-5x"></i>
+                        {% if "En Progreso" in pedido.estado %}
+                            {% if pedido.estado == "En Progreso (Preparando paquete)" %}
+                                <i class="fas fa-dolly-flatbed secondary fa-5x"></i>
+                            {% else %}
+                                <i class="fas fa-box-open secondary fa-5x"></i>
+                            {% endif %}
+                        {% elif pedido.estado == "Cancelado" %}
+                        <i class="fas fa-times-circle secondary fa-5x"></i>
+                        {% endif %}
                         <h5 class="mt-2 px-3">
                             {{ pedido.estado }}
                         </h5>
@@ -78,29 +86,170 @@
                         <h5 class="mt-3">
                             <strong style="color: #737373">Productos:</strong>{{ pedido.productos_str }}
                         </h5>
-                        {% if pedido.estado == "Enviado" %}
+                        {% if pedido.estado == "Enviado" or pedido.estado == "Entregado" %}
                             <h5 class="mt-4">
-                                <strong style="color: #737373">Fecha de entrega:</strong>Viernes 22 de Diciembre, 2019
+                                <strong style="color: #737373">Fecha de entrega:</strong>{{ pedido.fecha_de_entrega_str }}
                             </h5>
                         {% endif %}
                         <div class="row w-100 text-center mx-auto mt-4 mb-4">
-                            <div class="col text-center">
-                                <a class="no-underline d-inline-flex text-center w-75 mx-0 px-0" href="register.html">
-                                    <button class="btn btn-lg btn-primary btn-block mx-auto w-100"
-                                        style="min-width: 200px;">
-                                        <strong>Pagar pedido</strong>
-                                    </button>
-                                </a>
-                            </div>
-                            <div class="col text-center">
-                                <a class="no-underline d-inline-flex text-center w-75 mx-0 px-0" href="{{ url_for('pedido_page.show', id_pedido=pedido.id) }}">
-                                    <button class="btn btn-lg btn-outline-secondary btn-block mx-auto w-100"
+                            {% if pedido.estado == "Cancelado" or pedido.estado == "En Progreso (Preparando paquete)" %}
+                                <div class="col text-center">
+                                    <a class="no-underline d-inline-flex text-center w-50 mx-0 px-0" href="{{ url_for('pedido_page.show', id_pedido=pedido.id) }}"
+                                    style="max-width:300px;">
+                                        <button class="btn btn-lg btn-outline-secondary btn-block mx-auto w-100"
                                         style="min-width: 200px;">
                                         <strong>Más detalles</strong>
-                                    </button>
-                                </a>
+                                        </button>
+                                    </a>
+                                </div>
+                            {% elif "En Progreso" in pedido.estado or pedido.estado == "Enviado" %}
+                                {% if pedido.estado == "En Progreso (Pago y dirección pendientes)" or pedido.estado == "En Progreso (Pago pendiente)" or pedido.estado == "En Progreso (Pago rechazado)" or pedido.estado == "En Progreso (Pago rechazado y dirección pendiente)" %}
+                                    <div class="col text-center">
+                                        <a class="no-underline d-inline-flex text-center w-75 mx-0 px-0" href="#">
+                                            <button class="btn btn-lg btn-primary btn-block mx-auto w-100"
+                                                style="min-width: 200px;" data-toggle="modal" data-target="#ElegirMetodoDePago{{pedido.id}}" >
+                                                <strong>Pagar pedido</strong>
+                                            </button>
+                                        </a>
+                                    </div>
+
+                                    <!-- Modal para elegir método de pago -->
+                                    <div class="modal fade" id="ElegirMetodoDePago{{pedido.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content text-dark px-4"
+                                                style="border-color: #FF5500; border-radius: 15px; border-width: 5px;">
+                                                <div class="modal-body" style="background-color: white; border-radius: 15px;">
+
+                                                    <!-- Botón para cerrar modal -->
+                                                    <button type="button" class="close mt-1 mr-1" data-dismiss="modal" aria-label="Close">
+                                                        <i class="fas fa-times"></i>
+                                                    </button><br>
+
+                                                    <!-- Título de modal -->
+                                                    <h4 class="mt-1 text-center" style="font-weight: 600;">Elige tu método de pago
+                                                    </h4>
+
+                                                    <!-- Formulario de método de pago -->
+                                                    <form class="form mx-auto w-100 mt-4" role="form" autocomplete="off"
+                                                        id="formulario_metodo_de_pago" novalidate="" action="{{ url_for('pedido_page.elegir_metodo_de_pago') }}" method="POST">
+
+                                                        <!-- Input de id_pedido -->
+                                                        <input type="hidden" id="id_pedido" name="id_pedido" value="{{ pedido.id }}">
+
+                                                        <div class="form-group">
+                                                            <div class="btn-group-toggle m-auto text-center w-100" data-toggle="buttons">
+                                                                <label class="btn btn-lg btn-outline-secondary rounded w-100 border">
+                                                                    <input type="radio" name="metodo_de_pago" id="metodo_de_pago" autocomplete="off" value="tarjeta">
+                                                                    <i class="far fa-credit-card mr-2"></i>Tarjeta de
+                                                                    crédito/débito
+                                                                </label><br>
+                                                                <label class="btn btn-lg btn-outline-secondary rounded w-100 border mt-2">
+                                                                    <input type="radio" name="metodo_de_pago" id="metodo_de_pago" autocomplete="off" value="efectivo"><i
+                                                                        class="fas fa-money-bill-wave mr-2"></i>Efectivo
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Botón para enviar formulario-->
+                                                        <button class="btn btn-lg btn-primary mt-4 mb-4 btn-block w-75 mx-auto" href="home.html">
+                                                            <strong class="text-light">Seleccionar</strong>
+                                                        </button>
+                                                    </form>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% elif pedido.estado == "En Progreso (Dirección pendiente)" %}
+                                    <div class="col text-center">
+                                        <a class="no-underline d-inline-flex text-center w-75 mx-0 px-0" href="#">
+                                            <button class="btn btn-lg btn-primary btn-block mx-auto w-100"
+                                                style="min-width: 200px;">
+                                                <strong>Agregar dirección</strong>
+                                            </button>
+                                        </a>
+                                    </div>
+
+                                {% elif pedido.estado == "Enviado" %}
+                                    <div class="col text-center">
+                                        <a class="no-underline d-inline-flex text-center w-75 mx-0 px-0" href="#">
+                                            <button class="btn btn-lg btn-primary btn-block mx-auto w-100"
+                                                style="min-width: 200px; " data-toggle="modal" data-target="#AgregarDireccion">
+                                                <strong>Agregar dirección</strong>
+                                            </button>
+                                        </a>
+                                    </div>
+
+                                    <!-- Modal de formulario para agregar dirección -->
+                                    <div class="modal fade" id="AgregarDireccion{{ pedido.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content text-dark px-4"
+                                                style="border-color: #FF5500; border-radius: 15px; border-width: 5px;">
+                                                <div class="modal-body" style="background-color: white; border-radius: 15px;">
+
+                                                    <!-- Botón para cerrar modal -->
+                                                    <button type="button" class="close mt-1 mr-1" data-dismiss="modal" aria-label="Close">
+                                                        <i class="fas fa-times"></i>
+                                                    </button><br>
+
+                                                    <!-- Título de modal -->
+                                                    <h4 class="mt-1 text-center" style="font-weight: 600;">¿Dónde te entregamos tus productos?
+                                                    </h4>
+
+                                                    <!-- Formulario de dirección -->
+                                                    <form class="form mx-auto w-100 mt-4" role="form" autocomplete="off" id="formulario_direccion"
+                                                        novalidate="" method="POST" action="{{ url_for('pedido_page.agregar_direccion')}}">
+
+                                                        <!-- Input de id_pedido -->
+                                                        <input type="hidden" id="id_pedido" name="id_pedido" value="{{ pedido.id }}">
+
+                                                        <!-- Input de distrito -->
+                                                        <div class="form-group">
+                                                            <select class="form-control" id="distrito" name="distrito">
+                                                                <option selected>Distrito</option>
+                                                                <option>Barranco</option>
+                                                                <option>Chorrillos</option>
+                                                                <option>Jesus María</option>
+                                                                <option>La Molina</option>
+                                                                <option>Miraflores</option>
+                                                                <option>San Borja</option>
+                                                                <option>San Isidro</option>
+                                                                <option>San Miguel</option>
+                                                                <option>Santiago de Surco</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- Input de dirección -->
+                                                        <input type="text" class="form-control mt-3" name="direccion" id="direccion" required
+                                                            placeholder="Dirección"
+                                                            oninvalid="this.setCustomValidity('Ingresa tu correo electrónico')"
+                                                            oninput="this.setCustomValidity('')" />
+
+
+                                                        <!-- Botón para enviar formulario-->
+                                                        <button class="btn btn-lg btn-primary mt-4 mb-4 btn-block w-75 mx-auto" href="home.html">
+                                                            <strong class="text-light">Confirmar</strong>
+                                                        </button>
+                                                    </form>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                {% endif %}
+                                <div class="col text-center">
+                                    <a class="no-underline d-inline-flex text-center w-75 mx-0 px-0" href="{{ url_for('pedido_page.show', id_pedido=pedido.id) }}">
+                                        <button class="btn btn-lg btn-outline-secondary btn-block mx-auto w-100"
+                                            style="min-width: 200px;">
+                                            <strong>Más detalles</strong>
+                                        </button>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
+                        {% elif pedido.estado == "Cancelado" %}
+                        {% endif %}
                     </div>
                 </div>
             </div>
