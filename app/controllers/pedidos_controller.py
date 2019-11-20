@@ -16,7 +16,7 @@ pedido_page = Blueprint('pedido_page', 'api', template_folder=template_dir)
 def create():
     id_canasta = int(session["current_user_id"])
     nuevo_pedido = Pedido.generar_pedido(id_canasta)
-    return redirect(url_for('pedido_page.index'))
+    return redirect(url_for('pedido_page.show(id_canasta)'))
 
 @pedido_page.route('/mis_pedidos/<estado>', methods=['GET'])
 def index(estado):

@@ -8,7 +8,6 @@ import os
 template_dir = os.path.abspath('app/views')
 registration_page = Blueprint('registration_page', 'api', template_folder=template_dir)
 
-
 @registration_page.route('/register', methods=['GET'])
 def new():
     if session.get('logged_in'):
@@ -35,7 +34,7 @@ def create():
     anho = int(request.form['fecha_de_nacimiento_anho'])
     usuario.fecha_nacimiento = datetime(anho, mes, dia)
     usuario.numero_de_tarjeta = request.form['numero_de_tarjeta']
-    if usuario.es_mayor_de_edad():
+    if usuario.es_mayor_de_edad() and usuario.nombre_completo_es_valido() and nombre_de_usuario_es_unico():
         if usuario.crear():
             #Se logea al usuario automaticamente
             session['logged_in'] = True
@@ -52,5 +51,8 @@ def create():
             errores.append('Hubo un error al crear tu cuenta.')
             return render_template('usuarios/registrations/new.html', errores = errores)
     else:
-        errores.append("Debes ser mayor de edad para registrarte")
+        if not usuario.es_mayor_de_edad():
+            errores.append("Debes ser mayor de edad para registrarte")
+        if not usuario.nombre_completo_es_valido():
+            errores.append("Tu nombre no debe contener caracteres especiales.")
         return render_template('usuarios/registrations/new.html', errores = errores)

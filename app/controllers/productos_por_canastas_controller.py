@@ -15,8 +15,8 @@ producto_por_canasta_page = Blueprint('producto_por_canasta_page', 'api', templa
 def create():
     if session['logged_in']:
         producto_por_canasta = ProductoPorCanasta()
-        id_producto = int(request.form['id_producto'])
-        id_canasta = int(request.form['id_canasta'])
+        id_producto = int(float(request.form['id_producto']))
+        id_canasta = int(float(request.form['id_canasta']))
         producto_por_canasta.producto = Producto.obtener(id_producto)
         producto_por_canasta.canasta = Producto.obtener(id_canasta)
         producto_por_canasta.cantidad = int(request.form['cantidad'])
