@@ -76,9 +76,8 @@ def elegir_metodo_de_pago():
         pedido.estado = "En Progreso (Dirección pendiente)"
     else:
         pedido.estado = "En Progreso (Preparando paquete)"
-    pedido.fecha_de_pago = datetime.now
     pedido.actualizar()
-    return redirect(url_for('pedido_page.show', id_pedido = id_pedido))
+    return redirect(url_for('pedido_page.index', estado="en_progreso"))
 
 @pedido_page.route('/pagar_pedido', methods=['POST'])
 def pagar_pedido():
@@ -90,4 +89,4 @@ def pagar_pedido():
     if opcion == "efectivo":
         pedido.metodo_de_pago = "Efectivo"
     pedido.actualizar()
-    return redirect(url_for('pedido_page.show', id_pedido = id_pedido))
+    return redirect(url_for('pedido_page.index', estado="en_progreso"))

@@ -218,7 +218,7 @@ class Usuario(object):
             #Query de tipo SELECT
             query = """SELECT * FROM pedidos WHERE id_usuario = {}""".format(self.id)
             if estado == "en_progreso":
-                query += """ AND estado LIKE 'En Progreso%' OR estado LIKE 'Enviado';"""
+                query += """ AND (estado LIKE 'En Progreso%' OR estado LIKE 'Enviado')"""
             elif estado == "entregado":
                 query += """ AND estado LIKE 'Entregado%'"""
             elif estado == "cancelado":

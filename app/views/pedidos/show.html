@@ -187,7 +187,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <h4>
-                                        <strong style="color: #737373;">Estado de pago:</strong><strong><br>Aceptado el {{ pedido.fecha_de_pago_str }}</strong>
+                                        <strong style="color: #737373;">Estado de pago:</strong><strong><br>Aceptado</strong>
                                     </h4>
                                 </div>
                             {% endif %}
@@ -326,7 +326,7 @@
 
                             <!-- Formulario de método de pago -->
                             <form class="form mx-auto w-100 mt-4" role="form" autocomplete="off"
-                                id="formulario_metodo_de_pago" novalidate="" action="{{ url_for('pedido_page.elegir_metodo_de_pago') }}" method="POST">
+                                id="formulario_metodo_de_pago" action="{{ url_for('pedido_page.elegir_metodo_de_pago') }}" method="POST">
 
                                 <!-- Input de id_pedido -->
                                 <input type="hidden" id="id_pedido" name="id_pedido" value="{{ pedido.id }}">
@@ -345,7 +345,7 @@
                                     </div>
                                 </div>
                                 <!-- Botón para enviar formulario-->
-                                <button class="btn btn-lg btn-primary mt-4 mb-4 btn-block w-75 mx-auto" href="home.html">
+                                <button class="btn btn-lg btn-primary mt-4 mb-4 btn-block w-75 mx-auto" type="submit">
                                     <strong class="text-light">Seleccionar</strong>
                                 </button>
                             </form>

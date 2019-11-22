@@ -258,7 +258,7 @@ class Pedido(object):
             #Objeto cursor
             cursor = db.cursor()
             #Consulta de tipo UPDATE
-            query = """UPDATE pedidos SET id_usuario = {}, tarifa_de_envio = {}, fecha_de_actualizacion = '{}', estado = '{}', repartidor = '{}', metodo_de_pago = '{}', direccion_de_envio = '{}', tarifa_de_envio = '{}', fecha_de_pago = '{}' WHERE id = {}""".format(self.usuario.id, self.tarifa_de_envio, datetime.now(), self.estado, self.repartidor, self.metodo_de_pago, self.direccion_de_envio, self.tarifa_de_envio, self.fecha_de_pago, self.id)
+            query = """UPDATE pedidos SET id_usuario = {}, tarifa_de_envio = {}, fecha_de_actualizacion = '{}', estado = '{}', repartidor = '{}', metodo_de_pago = '{}', direccion_de_envio = '{}', tarifa_de_envio = '{}' WHERE id = {}""".format(self.usuario.id, self.tarifa_de_envio, datetime.now(), self.estado, self.repartidor, self.metodo_de_pago, self.direccion_de_envio, self.tarifa_de_envio, self.id)
             #Imprimir query a ejecutar
             print('\u001b[33m' + '\033[1m' + query + '\033[0m')
             #Ejecutar query
